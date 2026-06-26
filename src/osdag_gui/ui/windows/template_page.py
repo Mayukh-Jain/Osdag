@@ -1666,6 +1666,14 @@ class CustomWindow(QWidget):
                 # NOTE: Cleanup is handled INSIDE display_3DModel() (common_logic.py:2863)
                 # Do NOT call cleanup_for_new_design() here to avoid duplicate cleanup
                 # which can cause "free(): corrupted unsorted chunks" on tab close
+                self.commLogicObj.display = self.display
+                self.commLogicObj.cad_widget = self.cad_widget  
+                from PySide6.QtWidgets import QCheckBox
+                for chkbox in self.cad_comp_widget.children():
+                    if chkbox.objectName() == 'Model':
+                        continue
+                    if isinstance(chkbox, QCheckBox):
+                        chkbox.setChecked(False)
                 self.commLogicObj.call_3DModel(status, main)
                 # NOTE: DO NOT call gc.collect() after CAD operations!
             except Exception as e:
